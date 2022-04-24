@@ -1,0 +1,72 @@
+body{
+    background-image: url("/static/images/datacenter.jpg");
+    background-position: center;
+    background-repeat: contain;
+    background-size: auto;
+    background-color: #4a61e6; 
+}
+
+img{
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+}
+
+#scroll-container {
+    overflow: hidden;
+    margin-top: 10px;
+    background-color: rgba(0, 0, 0, 0.4);
+    
+  }
+  
+  #scroll-text {
+    /* animation properties */
+    -moz-transform: translateX(100%);
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    
+    -moz-animation: my-animation 15s linear infinite;
+    -webkit-animation: my-animation 15s linear infinite;
+    animation: my-animation 15s linear infinite;
+  }
+
+  #scroll-text-top{
+      color: rgb(143, 0, 60);
+      font-size: 10ex;
+      font-family: 'Lora', sans-serif, bold;
+  }
+
+  #scroll-text-bottom{
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 7ex;
+    color: rgb(92, 2, 40);
+    font-family: 'Lora', sans-serif, bold;
+}
+  
+  /* for Firefox */
+  @-moz-keyframes my-animation {
+    from { -moz-transform: translateX(100%); }
+    to { -moz-transform: translateX(-100%); }
+  }
+  
+  /* for Chrome */
+  @-webkit-keyframes my-animation {
+    from { -webkit-transform: translateX(100%); }
+    to { -webkit-transform: translateX(-100%); }
+  }
+  
+  @keyframes my-animation {
+    from {
+      -moz-transform: translateX(100%);
+      -webkit-transform: translateX(100%);
+      transform: translateX(100%);
+    }
+    to {
+      -moz-transform: translateX(-100%);
+      -webkit-transform: translateX(-100%);
+      transform: translateX(-100%);
+    }
+  }  
