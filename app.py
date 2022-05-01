@@ -1,7 +1,7 @@
 from flask import Flask, flash, request, redirect, url_for, render_template
-import urllib.request
 import os
 from werkzeug.utils import secure_filename
+from fastai.vision.all import *
  
 app = Flask(__name__)
  
@@ -12,9 +12,17 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
  
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
- 
+
+learn = load_learner('static/models/export_safe.pkl')
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def wtc_predict(filename):
+    pred,pred_idx,probs = learn.predict(f'{UPLOAD_FOLDER}{filename}')
+    pourcentage = round(float(probs[pred_idx])*100,2)
+    resultat = f"{pred} et j'en suis sur à {pourcentage} %"
+    return resultat
 
 @app.route("/")
 def home():
@@ -33,21 +41,19 @@ def upload_image():
         return redirect(request.url)
     file = request.files['file']
     if file.filename == '':
-        flash('No image selected for uploading')
+        flash("Pas d'image sélectionnée")
         return redirect(request.url)
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        #print('upload_image filename: ' + filename)
-        flash('Image successfully uploaded and displayed below')
+        flash(f'{wtc_predict(filename)}')
         return render_template('wtc.html', filename=filename)
     else:
         flash('Allowed image types are - png, jpg, jpeg, gif')
         return redirect(request.url)
- 
+
 @app.route('/display/<filename>')
 def display_image(filename):
-    #print('display_image filename: ' + filename)
     return redirect(url_for('static', filename='uploads/' + filename), code=301)
  
 if __name__ == "__main__":
