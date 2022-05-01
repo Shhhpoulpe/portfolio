@@ -2,6 +2,8 @@ from flask import Flask, flash, request, redirect, url_for, render_template
 import os
 from werkzeug.utils import secure_filename
 from fastai.vision.all import *
+import pathlib
+from pathlib import Path
  
 app = Flask(__name__)
  
@@ -13,7 +15,9 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
  
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
-learn = load_learner('static/models/export_safe.pkl')
+plt = platform.system()
+if plt == 'Linux': pathlib.WindowsPath = pathlib.PosixPath
+learn = load_learner(Path('./static/models/export_safe.pkl'))
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
